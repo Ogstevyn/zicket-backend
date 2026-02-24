@@ -76,15 +76,12 @@ Tests are written using Jest and live inside the src/tests directory.
 
 Contributions are welcome! 🎉
 
-Fork this repo
-
-Create your feature branch: git checkout -b feature/your-feature
-
-Commit your changes: git commit -am 'Add new feature'
-
-Push to the branch: git push origin feature/your-feature
-
-Open a pull request 🚀
+- Fork this repo
+- Create your feature branch: git checkout -b feature/your-feature
+- Commit your changes: git commit -am 'Add new feature'
+- After applying your change, run `npm run lint:check && npm run build && npm test`
+- Push to the branch: git push origin feature/your-feature
+- Open a pull request 🚀
 
 Please follow the code style and add tests where applicable.
 
@@ -92,4 +89,4 @@ Please follow the code style and add tests where applicable.
 
 📬 Contact
 
-Have questions or suggestions? Feel free to reach out or open an issue.
+Have questions or suggestions? Feel free to reach out in the community(https://t.me/+nlYw80w3FF1jNGY0) or open an issue.
