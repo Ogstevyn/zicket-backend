@@ -9,6 +9,7 @@
     "dev": "nodemon --watch 'src/**/*.ts' --exec npx ts-node src/server.ts",
     "test": "jest",
     "test:watch": "jest --watch",
+    "format": "prettier --write .",
     "lint:check": "prettier --check ."
   },
   "repository": {

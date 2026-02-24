@@ -1,5 +1,9 @@
-import { Router } from "express";
-import { getEventTickets, getEventTicketsByCategory, getTrendingEventTickets } from "../controllers/event-ticket.controller";
+import { Router } from 'express';
+import {
+  getEventTickets,
+  getEventTicketsByCategory,
+  getTrendingEventTickets,
+} from '../controllers/event-ticket.controller';
 
 const eventTicketRoutes = Router();
 
