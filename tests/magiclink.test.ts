@@ -1,4 +1,8 @@
-import { generateMagicToken, hashToken, MAGIC_TOKEN_EXPIRATION } from '../src/utils/token';
+import {
+  generateMagicToken,
+  hashToken,
+  MAGIC_TOKEN_EXPIRATION,
+} from '../src/utils/token';
 
 describe('Magic Link Token Utilities', () => {
   describe('generateMagicToken', () => {
@@ -44,4 +48,3 @@ describe('Magic Link Token Utilities', () => {
     });
   });
 });
-

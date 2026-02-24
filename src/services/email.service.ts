@@ -45,7 +45,7 @@ class EmailService {
 
   async sendMagicLink(email: string, token: string): Promise<void> {
     const magicLink = `${process.env.FRONTEND_URL}/auth/magic?token=${token}`;
-    
+
     const html = `
       <!DOCTYPE html>
       <html>
