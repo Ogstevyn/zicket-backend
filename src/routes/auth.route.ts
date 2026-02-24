@@ -2,7 +2,10 @@ import express from 'express';
 import { signupController } from '../controllers/signup.controller';
 import { loginController } from '../controllers/login.controller';
 import { resendOtpController } from '../controllers/resendotp.controller';
-import { requestMagicLinkController, verifyMagicLinkController } from '../controllers/magiclink.controller';
+import {
+  requestMagicLinkController,
+  verifyMagicLinkController,
+} from '../controllers/magiclink.controller';
 import passport from 'passport';
 import { generateToken } from '../config/passport';
 import dotenv from 'dotenv';
@@ -12,49 +15,42 @@ dotenv.config();
 
 const authRoute = express.Router();
 
-authRoute.post('/signup', 
-  getLimiter('signup'), 
-  signupController
-);
+authRoute.post('/signup', getLimiter('signup'), signupController);
 
-authRoute.post('/login', 
-  getLimiter('login'), 
-  loginController
-);
+authRoute.post('/login', getLimiter('login'), loginController);
 
-authRoute.post('/resend-otp',
-  getLimiter('otp'),
-  resendOtpController
-);
+authRoute.post('/resend-otp', getLimiter('otp'), resendOtpController);
 
-authRoute.post('/magic-link-request',
+authRoute.post(
+  '/magic-link-request',
   getLimiter('magicLink'),
-  requestMagicLinkController
+  requestMagicLinkController,
 );
 
-authRoute.get('/magic',
-  verifyMagicLinkController
+authRoute.get('/magic', verifyMagicLinkController);
+
+authRoute.get(
+  '/google',
+  passport.authenticate('google', {
+    scope: ['profile', 'email'],
+  }),
 );
 
-authRoute.get('/google', passport.authenticate('google', {
-    scope: ['profile', 'email']
-}));
+authRoute.get(
+  '/google/callback',
+  passport.authenticate('google', {
+    failureRedirect: '/auth/login',
+    session: false,
+  }),
+  (req, res) => {
+    const token = generateToken(req.user);
 
-authRoute.get('/google/callback', 
-    passport.authenticate('google', { 
-        failureRedirect: '/auth/login', 
-        session: false 
-    }),
-    (req, res) => {
-        const token = generateToken(req.user);
-        
-        // Redirect to frontend with token
-        res.redirect(`${process.env.FRONTEND_URL}/oauth?token=${token}`);
-        
-        // Send token in response body
-        // res.status(200).json({ token });
-    }
+    // Redirect to frontend with token
+    res.redirect(`${process.env.FRONTEND_URL}/oauth?token=${token}`);
+
+    // Send token in response body
+    // res.status(200).json({ token });
+  },
 );
-
 
 export default authRoute;

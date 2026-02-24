@@ -19,24 +19,39 @@ export interface IEventTicket extends Document {
     isTrending: boolean; // flag to indicate if the event is trending
 }
 
-const eventTicketSchema = new Schema<IEventTicket>({
-    name: { type: String, required: true },
-    about: { type: String, required: true },
-    price: { type: Number, required: true, min: 0 },
-    privacyLevel: { type: Number, required: true, enum: [0, 1, 2], default: 1 },
-    eventCategory: { type: String, required: true },
-    organizedBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    eventDate: { type: Date, required: true },
-    location: { type: String, required: true, default: 'Virtual' },
-    ticketType: [{ type: String, required: true }],
-    totalTickets: { type: Number, required: true, min: 0 },
-    availableTickets: { type: Number, required: true, min: 0 },
-    soldTickets: { type: Number, required: true, min: 0, default: 0 },
-    eventStatus: { type: String, required: true, enum: ['upcoming', 'ongoing', 'completed', 'cancelled'], default: 'upcoming' },
-    imageUrl: { type: String, required: true },
-    tags: [{ type: String }],
+const eventTicketSchema = new Schema<IEventTicket>(
+    {
+        name: { type: String, required: true },
+        about: { type: String, required: true },
+        price: { type: Number, required: true, min: 0 },
+        privacyLevel: { type: Number, required: true, enum: [0, 1, 2], default: 1 },
+        eventCategory: { type: String, required: true },
+        organizedBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+        eventDate: { type: Date, required: true },
+        location: { type: String, required: true, default: 'Virtual' },
+        ticketType: [{ type: String, required: true }],
+        totalTickets: { type: Number, required: true, min: 0 },
+        availableTickets: { type: Number, required: true, min: 0 },
+        soldTickets: { type: Number, required: true, min: 0, default: 0 },
+        eventStatus: {
+            type: String,
+            required: true,
+            enum: ['upcoming', 'ongoing', 'completed', 'cancelled'],
+            default: 'upcoming',
+        },
+        imageUrl: { type: String, required: true },
+        tags: [{ type: String }],
+<<<<<<< HEAD
+    },
+    { timestamps: true },
+);
+=======
     isTrending: { type: Boolean, default: false },
 }, { timestamps: true });
+>>>>>>> main
 
-const EventTicket = mongoose.model<IEventTicket>('EventTicket', eventTicketSchema);
+const EventTicket = mongoose.model<IEventTicket>(
+    'EventTicket',
+    eventTicketSchema,
+);
 export default EventTicket;

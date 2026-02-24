@@ -46,7 +46,7 @@ export class EventTicketService {
         return date.toLocaleDateString('en-US', {
             month: 'short',
             day: '2-digit',
-            year: 'numeric'
+            year: 'numeric',
         });
     }
 
@@ -56,7 +56,7 @@ export class EventTicketService {
     private static formatTime(date: Date): string {
         return date.toLocaleTimeString('en-US', {
             hour: 'numeric',
-            hour12: true
+            hour12: true,
         });
     }
 
@@ -74,7 +74,9 @@ export class EventTicketService {
     /**
      * Transforms event ticket document to response format
      */
-    private static transformEventTicket(ticket: IEventTicket): EventTicketResponse {
+    private static transformEventTicket(
+        ticket: IEventTicket,
+    ): EventTicketResponse {
         return {
             title: ticket.name,
             status: this.mapPrivacyLevelToStatus(ticket.privacyLevel),
@@ -85,14 +87,18 @@ export class EventTicketService {
             timezone: this.getTimezoneString(ticket.eventDate),
             location: ticket.location,
             price: ticket.price,
-            imageUrl: ticket.imageUrl
+            imageUrl: ticket.imageUrl,
         };
     }
 
     /**
      * Fetches event tickets by category with pagination
      */
-    static async getEventTicketsByCategory(category: string, page: number = 1, limit: number = this.DEFAULT_LIMIT): Promise<PaginatedEventTicketsResponse> {
+    static async getEventTicketsByCategory(
+        category: string,
+        page: number = 1,
+        limit: number = this.DEFAULT_LIMIT,
+    ): Promise<PaginatedEventTicketsResponse> {
         try {
             // Validate pagination parameters
             const validPage = Math.max(1, page);
@@ -102,7 +108,9 @@ export class EventTicketService {
             const skip = (validPage - 1) * validLimit;
 
             // Create case-insensitive filter for category
-            const filter = { eventCategory: { $regex: new RegExp(`^${category}$`, 'i') } };
+            const filter = {
+                eventCategory: { $regex: new RegExp(`^${category}$`, 'i') },
+            };
 
             // Get tickets and total count
             const [tickets, total] = await Promise.all([
@@ -111,27 +119,34 @@ export class EventTicketService {
                     .skip(skip)
                     .limit(validLimit)
                     .lean(),
-                EventTicket.countDocuments(filter)
+                EventTicket.countDocuments(filter),
             ]);
 
             // Transform tickets to response format
-            const transformedTickets = tickets.map(ticket => this.transformEventTicket(ticket as unknown as IEventTicket));
+            const transformedTickets = tickets.map((ticket) =>
+                this.transformEventTicket(ticket as unknown as IEventTicket),
+            );
 
             return {
                 page: validPage,
                 limit: validLimit,
                 total,
-                tickets: transformedTickets
+                tickets: transformedTickets,
             };
         } catch (error) {
-            throw new Error(`Failed to fetch event tickets by category: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            throw new Error(
+                `Failed to fetch event tickets by category: ${error instanceof Error ? error.message : 'Unknown error'}`,
+            );
         }
     }
 
     /**
      * Fetches event tickets with pagination
      */
-    static async getEventTickets(page: number = 1, limit: number = this.DEFAULT_LIMIT): Promise<PaginatedEventTicketsResponse> {
+    static async getEventTickets(
+        page: number = 1,
+        limit: number = this.DEFAULT_LIMIT,
+    ): Promise<PaginatedEventTicketsResponse> {
         try {
             // Validate pagination parameters
             const validPage = Math.max(1, page);
@@ -151,16 +166,20 @@ export class EventTicketService {
                 .lean(); // Use lean() for better performance
 
             // Transform tickets to response format
-            const transformedTickets = tickets.map(ticket => this.transformEventTicket(ticket as unknown as IEventTicket));
+            const transformedTickets = tickets.map((ticket) =>
+                this.transformEventTicket(ticket as unknown as IEventTicket),
+            );
 
             return {
                 page: validPage,
                 limit: validLimit,
                 total,
-                tickets: transformedTickets
+                tickets: transformedTickets,
             };
         } catch (error) {
-            throw new Error(`Failed to fetch event tickets: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            throw new Error(
+                `Failed to fetch event tickets: ${error instanceof Error ? error.message : 'Unknown error'}`,
+            );
         }
     }
 

@@ -1,6 +1,10 @@
 import { RequestHandler } from 'express';
 import User from '../models/user';
-import { generateMagicToken, hashToken, MAGIC_TOKEN_EXPIRATION } from '../utils/token';
+import {
+  generateMagicToken,
+  hashToken,
+  MAGIC_TOKEN_EXPIRATION,
+} from '../utils/token';
 import emailService from '../services/email.service';
 import { generateToken } from '../config/passport';
 
@@ -16,16 +20,17 @@ export const requestMagicLinkController: RequestHandler = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      res.status(200).json({ 
-        message: 'If an account exists with this email, a magic link has been sent' 
+      res.status(200).json({
+        message:
+          'If an account exists with this email, a magic link has been sent',
       });
       return;
     }
 
     if (user.provider === 'google') {
-      res.status(400).json({ 
+      res.status(400).json({
         message: 'Please login with Google',
-        provider: 'google' 
+        provider: 'google',
       });
       return;
     }
@@ -38,25 +43,27 @@ export const requestMagicLinkController: RequestHandler = async (req, res) => {
     user.magicTokenExpires = tokenExpires;
     await user.save();
 
-    console.log(`Magic link requested for ${email} from IP: ${req.ip} at ${new Date().toISOString()}`);
+    console.log(
+      `Magic link requested for ${email} from IP: ${req.ip} at ${new Date().toISOString()}`,
+    );
 
     try {
       await emailService.sendMagicLink(email, token);
     } catch (emailError: any) {
       console.error('Failed to send magic link email:', emailError.message);
-      
+
       user.magicToken = undefined;
       user.magicTokenExpires = undefined;
       await user.save();
 
-      res.status(500).json({ 
-        message: 'Failed to send magic link. Please try again later.' 
+      res.status(500).json({
+        message: 'Failed to send magic link. Please try again later.',
       });
       return;
     }
 
-    res.status(200).json({ 
-      message: 'Magic link sent to your email. Please check your inbox.' 
+    res.status(200).json({
+      message: 'Magic link sent to your email. Please check your inbox.',
     });
   } catch (error: any) {
     console.error('Error in requestMagicLinkController:', error.message);
@@ -75,39 +82,41 @@ export const verifyMagicLinkController: RequestHandler = async (req, res) => {
 
     const hashedToken = hashToken(token);
 
-    const user = await User.findOne({ 
+    const user = await User.findOne({
       magicToken: hashedToken,
-      magicTokenExpires: { $gt: new Date() }
+      magicTokenExpires: { $gt: new Date() },
     });
 
     if (!user) {
-      res.status(401).json({ 
-        message: 'Invalid or expired magic link. Please request a new one.' 
+      res.status(401).json({
+        message: 'Invalid or expired magic link. Please request a new one.',
       });
       return;
     }
 
     user.magicToken = undefined;
     user.magicTokenExpires = undefined;
-    
+
     if (!user.emailVerifiedAt) {
       user.emailVerifiedAt = new Date();
     }
-    
+
     await user.save();
 
-    console.log(`Magic link verified for ${user.email} from IP: ${req.ip} at ${new Date().toISOString()}`);
+    console.log(
+      `Magic link verified for ${user.email} from IP: ${req.ip} at ${new Date().toISOString()}`,
+    );
 
     const jwtToken = generateToken(user);
 
-    res.status(200).json({ 
+    res.status(200).json({
       message: 'Login successful',
       token: jwtToken,
       user: {
         id: user._id,
         name: user.name,
-        email: user.email
-      }
+        email: user.email,
+      },
     });
   } catch (error: any) {
     console.error('Error in verifyMagicLinkController:', error.message);

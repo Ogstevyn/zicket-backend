@@ -12,21 +12,20 @@ Before you begin, make sure you have the following installed:
 
 ---
 
-
 ## 📁 Project Structure
+
 src/ <br>
-  ├── config/ # Environment config and DB setup <br>
-  ├── controllers/ # Request handlers <br>
-  ├── models/ # Mongoose schemas <br>
-  ├── routes/ # Express route definitions <br>
-  ├── services/ # Business logic layer <br>
-  ├── tests/ # Jest test files <br>
-  ├── utils/ # Utility functions <br>
-  └── app.ts # Application grade <br>
-  └── server.ts # Application entry point <br>
+├── config/ # Environment config and DB setup <br>
+├── controllers/ # Request handlers <br>
+├── models/ # Mongoose schemas <br>
+├── routes/ # Express route definitions <br>
+├── services/ # Business logic layer <br>
+├── tests/ # Jest test files <br>
+├── utils/ # Utility functions <br>
+└── app.ts # Application grade <br>
+└── server.ts # Application entry point <br>
+
 ---
-
-
 
 ---
 
@@ -42,8 +41,8 @@ cd zicket-backend
 # 3. Install dependencies
 npm install
 ```
----
 
+---
 
 ## ⚙️ Environment Setup
 
@@ -52,7 +51,6 @@ Create a `.env` file in the root directory using this command: `cp .env.example 
 > Make sure you **never commit `.env`** to version control.
 
 ---
-
 
 🚀 Running the App
 Development mode (with hot reloading):
@@ -63,10 +61,10 @@ Production mode:
 
 ---
 
-
 🧪 Running Tests
 
 # Run all tests
+
 `npm run test`
 Tests are written using Jest and live inside the src/tests directory.
 
@@ -91,7 +89,6 @@ Open a pull request 🚀
 Please follow the code style and add tests where applicable.
 
 ---
-
 
 📬 Contact
 

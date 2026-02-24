@@ -19,9 +19,9 @@ export const loginController: RequestHandler = async (req, res, next) => {
     }
 
     if (user.provider === 'google') {
-      res.status(400).json({ 
+      res.status(400).json({
         message: 'Please login with Google',
-        provider: 'google' 
+        provider: 'google',
       });
       return;
     }
@@ -35,7 +35,7 @@ export const loginController: RequestHandler = async (req, res, next) => {
     const token = jwt.sign(
       { id: user._id, email: user.email },
       process.env.JWT_SECRET || 'default_secret',
-      { expiresIn: '1h' }
+      { expiresIn: '1h' },
     );
 
     res.status(200).json({ message: 'Login successful', token });

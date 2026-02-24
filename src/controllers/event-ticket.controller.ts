@@ -37,20 +37,53 @@ export const getEventTickets: RequestHandler = async (req, res) => {
             message: error instanceof Error ? error.message : 'Failed to fetch event tickets'
         });
     }
+
+    if (limit < 1 || limit > 50) {
+        return res.status(400).json({
+            error: 'Invalid limit',
+            message: 'Limit must be between 1 and 50',
+        });
+    }
+
+    // Fetch event tickets from service
+    const result = await EventTicketService.getEventTickets(page, limit);
+
+    // Return success response
+    res.status(200).json(result);
+} catch (error) {
+    console.error('Error fetching event tickets:', error);
+
+    // Return error response
+    res.status(500).json({
+        error: 'Internal server error',
+        message:
+            error instanceof Error
+                ? error.message
+                : 'Failed to fetch event tickets',
+    });
+}
 };
 
 export const getEventTicketsByCategory: RequestHandler = async (req, res) => {
+<<<<<<< HEAD
     try {
         // Extract category from params and pagination from query
         const category = req.params.category as string;
         const page = parseInt(req.query.page as string) || 1;
         const limit = 8;
+=======
+    try {
+        // Extract category from params and pagination from query
+        const category = req.params.category as string;
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = 8;
+>>>>>>> main
 
         // Validate category parameter
         if (!category || category.trim() === '') {
             return res.status(400).json({
                 error: 'Invalid category',
-                message: 'Category parameter is required'
+                message: 'Category parameter is required',
             });
         }
 
@@ -58,23 +91,29 @@ export const getEventTicketsByCategory: RequestHandler = async (req, res) => {
         if (page < 1) {
             return res.status(400).json({
                 error: 'Invalid page number',
-                message: 'Page number must be greater than 0'
+                message: 'Page number must be greater than 0',
             });
         }
 
         // Fetch event tickets by category from service
-        const result = await EventTicketService.getEventTicketsByCategory(category, page, limit);
+        const result = await EventTicketService.getEventTicketsByCategory(
+            category,
+            page,
+            limit,
+        );
 
         // Return success response
         res.status(200).json(result);
-
     } catch (error) {
         console.error('Error fetching event tickets by category:', error);
 
         // Return error response
         res.status(500).json({
             error: 'Internal server error',
-            message: error instanceof Error ? error.message : 'Failed to fetch event tickets by category'
+            message:
+                error instanceof Error
+                    ? error.message
+                    : 'Failed to fetch event tickets by category',
         });
     }
 };
