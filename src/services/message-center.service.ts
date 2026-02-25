@@ -78,7 +78,11 @@ export class MessageCenterService {
       $or: [{ status: 'sent' }, { sentAt: { $lte: now } }],
     };
 
-    return this.getPaginatedMessages(filter, { sentAt: -1, createdAt: -1 }, page);
+    return this.getPaginatedMessages(
+      filter,
+      { sentAt: -1, createdAt: -1 },
+      page,
+    );
   }
 
   static async getScheduledMessages(
